@@ -6,7 +6,7 @@ const getAll = async () => {
 }
 
 const getById = async id => {
-  const [res] = await db("accounts").where({ productID: id});
+  const [res] = await db("accounts").where("id", id);
   return res;
 }
 

@@ -11,7 +11,9 @@ router.get('/', async (req, res, next) => {
 })
 
 router.get('/:id', (req, res, next) => {
-  
+  Accounts.getById(req.params.id)
+    .then( account => res.json(account))
+    .catch( err => res.status(500).json({message: "Uh-oh."}));
 })
 
 router.post('/', (req, res, next) => {
