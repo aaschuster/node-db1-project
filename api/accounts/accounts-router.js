@@ -24,7 +24,9 @@ router.post('/', (req, res, next) => {
 })
 
 router.put('/:id', (req, res, next) => {
-  
+    Accounts.updateById(req.params.id, req.body)
+      .then( updatedAccount => res.json(updatedAccount))
+      .catch( err => res.status(500).json({message: "Uh-oh."}) );
 });
 
 router.delete('/:id', (req, res, next) => {
