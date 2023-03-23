@@ -23,8 +23,8 @@ const updateById = async (id, account) => {
 }
 
 const deleteById = async id => {
-  const deletedAccount = await db("accounts").where({ productID: id});
-  await db("accounts").where("productID", id).delete();
+  const deletedAccount = await db("accounts").where({ id: id});
+  await db("accounts").where("id", id).delete();
   return deletedAccount;
 }
 

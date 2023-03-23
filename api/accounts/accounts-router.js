@@ -30,7 +30,9 @@ router.put('/:id', (req, res, next) => {
 });
 
 router.delete('/:id', (req, res, next) => {
-  
+  Accounts.deleteById(req.params.id)
+    .then( deletedAccount => res.json(deletedAccount))
+    .catch( err => res.status(500).json({message: "Uh-oh."}) );
 })
 
 router.use((err, req, res, next) => { // eslint-disable-line
