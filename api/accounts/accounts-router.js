@@ -15,7 +15,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/:id', (req, res, next) => {
+router.get('/:id', checkAccountId, (req, res, next) => {
   Accounts.getById(req.params.id)
     .then( account => res.json(account))
     .catch(next);
@@ -28,13 +28,19 @@ router.post('/', checkAccountPayload, checkAccountNameUnique, (req, res, next) =
   
 })
 
-router.put('/:id', checkAccountPayload, checkAccountNameUnique, (req, res, next) => {
+router.put('/:id', 
+  checkAccountId, 
+  checkAccountPayload, 
+  checkAccountNameUnique, 
+
+  (req, res, next) => {
     Accounts.updateById(req.params.id, req.body)
       .then( updatedAccount => res.json(updatedAccount))
       .catch(next);
+      
 });
 
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', checkAccountId, (req, res, next) => {
   Accounts.deleteById(req.params.id)
     .then( deletedAccount => res.json(deletedAccount))
     .catch(next);
