@@ -69,7 +69,10 @@ exports.checkAccountPayload = (req, res, next) => {
 exports.checkAccountId = async (req, res, next) => {
   const account = await Accounts.getById(req.params.id);
 
-  if(account) next();
+  if(account) {
+    req.account = account;
+    next();
+  }
   else next({
     status: 404,
     message: "account not found"
