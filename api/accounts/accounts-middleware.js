@@ -1,19 +1,20 @@
 const Accounts = require("./accounts-model");
 
 exports.checkAccountNameUnique = async (req, res, next) => {
-  
+  const { name } = req.body;
+
   if(req.params.id) { 
     const account = await Accounts.getById(req.params.id);
-    if(account.name === req.body.name) {
+    if(account.name === name) {
       next();
       return;
     }
   }
-
+    
   const accounts = await Accounts.getAll();
   
   for (const account of accounts) {
-    if(account.name === req.body.name) {
+    if(account.name === name) {
       next({
         status: 400,
         message: "that name is taken"
@@ -43,8 +44,6 @@ exports.checkAccountPayload = (req, res, next) => {
     else if(budget < 0 || budget > 1000000) 
       errObj.message = "budget of account is too large or too small";
   }
-
-
 
   if(errObj.message) {
     next(errObj);

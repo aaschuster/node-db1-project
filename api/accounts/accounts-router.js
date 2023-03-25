@@ -21,7 +21,7 @@ router.get('/:id', checkAccountId, (req, res, next) => {
 
 router.post('/', checkAccountPayload, checkAccountNameUnique, (req, res, next) => {
   Accounts.create(req.body)
-    .then( newAccount => res.status(201).json(newAccount))
+    .then( newAccount => res.status(201).json(newAccount) )
     .catch(next);
   
 })
@@ -40,7 +40,7 @@ router.put('/:id',
 
 router.delete('/:id', checkAccountId, (req, res, next) => {
   Accounts.deleteById(req.params.id)
-    .then( deletedAccount => res.json(deletedAccount))
+    .then(() => res.json(req.account))
     .catch(next);
 })
 
