@@ -41,6 +41,15 @@ exports.checkAccountPayload = (req, res, next) => {
 }
 
 exports.checkAccountNameUnique = async (req, res, next) => {
+  
+  if(req.params.id) { // if req.params.id exists, we're dealing with a put request
+    const account = await Accounts.getById(req.params.id);
+    if(account.name === req.body.name) {
+      next();
+      return;
+    }
+  }
+
   const accounts = await Accounts.getAll();
   
   for (const account of accounts) {
