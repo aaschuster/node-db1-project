@@ -9,8 +9,9 @@ exports.checkAccountPayload = (req, res, next) => {
     return;
   }
 
-  let name = req.body.name.trim();
-  const { budget } = req.body;
+  req.body.name = req.body.name.trim();
+
+  const {name, budget} = req.body;
 
   if(name.length < 3 || name.length > 100) {
       next({
