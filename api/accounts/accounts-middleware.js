@@ -1,7 +1,7 @@
 const Accounts = require("./accounts-model");
 
 exports.checkAccountPayload = (req, res, next) => {
-  if(!req.body.name || !req.body.budget) {
+  if(req.body.name === undefined || req.body.budget === undefined) {
     next({
       status: 400,
       message: "name and budget are required"
@@ -21,7 +21,7 @@ exports.checkAccountPayload = (req, res, next) => {
       return;
   }
 
-  if(Number(budget) !== budget) {
+  if(budget !== 0 && !Number(budget)) {
     next({
       status: 400,
       message: "budget of account must be a number"
