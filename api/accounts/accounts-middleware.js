@@ -1,6 +1,32 @@
 const Accounts = require("./accounts-model");
 
+exports.checkAccountNameUnique = async (req, res, next) => {
+  
+  if(req.params.id) { 
+    const account = await Accounts.getById(req.params.id);
+    if(account.name === req.body.name) {
+      next();
+      return;
+    }
+  }
+
+  const accounts = await Accounts.getAll();
+  
+  for (const account of accounts) {
+    if(account.name === req.body.name) {
+      next({
+        status: 400,
+        message: "that name is taken"
+      })
+      return;
+    }
+  }
+
+  next();
+}
+
 exports.checkAccountPayload = (req, res, next) => {
+
   if(req.body.name === undefined || req.body.budget === undefined) {
     next({
       status: 400,
@@ -36,31 +62,6 @@ exports.checkAccountPayload = (req, res, next) => {
     })
     return;
   }  
-
-  next();
-}
-
-exports.checkAccountNameUnique = async (req, res, next) => {
-  
-  if(req.params.id) { // if req.params.id exists, we're dealing with a put request
-    const account = await Accounts.getById(req.params.id);
-    if(account.name === req.body.name) {
-      next();
-      return;
-    }
-  }
-
-  const accounts = await Accounts.getAll();
-  
-  for (const account of accounts) {
-    if(account.name === req.body.name) {
-      next({
-        status: 400,
-        message: "that name is taken"
-      })
-      return;
-    }
-  }
 
   next();
 }

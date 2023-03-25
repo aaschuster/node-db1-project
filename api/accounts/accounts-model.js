@@ -1,8 +1,7 @@
 const db = require("../../data/db-config");
 
 const getAll = async () => {
-  const accounts = await db("accounts");
-  return accounts;
+  return db("accounts");
 }
 
 const getById = async id => {
@@ -12,14 +11,12 @@ const getById = async id => {
 
 const create = async account => {
     const [newAccountID] = await db("accounts").insert(account);
-    const newAccount = await getById(newAccountID);
-    return newAccount;
+    return getById(newAccountID);
 }
 
 const updateById = async (id, account) => {
   await db("accounts").update(account).where("id", id);
-  const updatedAccount = await getById(id);
-  return updatedAccount;
+  return getById(id);
 }
 
 const deleteById = async id => {

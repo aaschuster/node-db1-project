@@ -30,8 +30,8 @@ router.post('/', checkAccountPayload, checkAccountNameUnique, (req, res, next) =
 
 router.put('/:id', 
   checkAccountId, 
-  checkAccountPayload, 
-  checkAccountNameUnique, 
+  checkAccountPayload,
+  checkAccountNameUnique,
 
   (req, res, next) => {
     Accounts.updateById(req.params.id, req.body)
