@@ -27,43 +27,29 @@ exports.checkAccountNameUnique = async (req, res, next) => {
 
 exports.checkAccountPayload = (req, res, next) => {
 
-  if(req.body.name === undefined || req.body.budget === undefined) {
-    next({
-      status: 400,
-      message: "name and budget are required"
-    });
-    return;
+  const errObj = { status: 400 };
+
+  if(req.body.name === undefined || req.body.budget === undefined)
+    errObj.message = "name and budget are required";
+  else {
+    req.body.name = req.body.name.trim();
+
+    const {name, budget} = req.body;
+
+    if(name.length < 3 || name.length > 100)
+      errObj.message = "name of account must be between 3 and 100";
+    else if (budget !== 0 && !Number(budget)) 
+      errObj.message = "budget of account must be a number";
+    else if(budget < 0 || budget > 1000000) 
+      errObj.message = "budget of account is too large or too small";
   }
 
-  req.body.name = req.body.name.trim();
 
-  const {name, budget} = req.body;
 
-  if(name.length < 3 || name.length > 100) {
-      next({
-        status: 400,
-        message: "name of account must be between 3 and 100"
-      });
-      return;
-  }
+  if(errObj.message) {
+    next(errObj);
+  } else next();
 
-  if(budget !== 0 && !Number(budget)) {
-    next({
-      status: 400,
-      message: "budget of account must be a number"
-    })
-    return;
-  }  
-
-  if(budget < 0 || budget > 1000000) {
-    next({
-      status: 400,
-      message: "budget of account is too large or too small"
-    })
-    return;
-  }  
-
-  next();
 }
 
 exports.checkAccountId = async (req, res, next) => {
